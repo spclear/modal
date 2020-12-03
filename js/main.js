@@ -1,0 +1,1 @@
+(()=>{"use strict";const o={modal:function(){console.log("works")}};o.modal()})();

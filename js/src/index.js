@@ -1,0 +1,3 @@
+import { $ } from './base';
+
+$.modal();

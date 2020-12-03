@@ -4,10 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Modal</title>
-  <link rel="stylesheet" href="reset.css">
+  <link rel="preconnect"
+    href="https://fonts.gstatic.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
+  <div class="modal">
+    <div class="modal__overlay">
+      <div class="modal__window">
+        <div class="modal__content">
+          <header class="modal__header">
+            <h2 class="modal__title">Modal title</h2>
+            <div class="modal__close">
+              &times;
+            </div>
+          </header>
+          <main class="modal__main">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla consectetur deleniti adipisci et beatae fugit officia? Tenetur corrupti aperiam ut nostrum voluptatem, eos excepturi, sapiente illo obcaecati molestias voluptatum ex.
+          </main>
+          <footer class="modal__footer">
+            <button class="modal__confirm button">
+              Confirm
+            </button>
+            <button class="modal__cancel button">
+              Cancel
+            </button>
+          </footer>
+        </div>
+    </div>
+    </div>
+  </div>
 
   <script src="js/main.js"></script>
 </body>
