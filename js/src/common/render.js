@@ -1,11 +1,4 @@
-export function _createFooter(buttons = []) {
-  if (buttons.length == 0) {
-    return '';
-  }
-
-  const footer = document.createElement('footer');
-  footer.classList.add('modal__footer');
-
+function _renderButtons(buttons, nodeContainer) {
   buttons.forEach(btn => {
     const button = document.createElement('button');
     const {
@@ -16,26 +9,29 @@ export function _createFooter(buttons = []) {
     button.textContent = title;
     button.onclick = handler;
 
-    footer.appendChild(button);
+    nodeContainer.appendChild(button);
   });
+}
+
+export function _createFooter(buttons = []) {
+  if (buttons.length == 0) {
+    return '';
+  }
+
+  const footer = document.createElement('footer');
+  footer.classList.add('modal__footer');
+  _renderButtons(buttons, footer);
 
   return footer;
 }
 
 export function _createModal(options) {
   const modal = document.createElement('div');
-  const defaultContent = `
-    <main class="modal__main">
-      modal_content
-    </main>
-    <footer class="modal__footer">
-      modal_footer
-    </footer>`;
 
   const {
     title,
     closable = true,
-    content = defaultContent,
+    content = 'modal_content: not specified',
     width = '400px',
     buttons = [],
   } = options;
@@ -69,4 +65,36 @@ export function _createModal(options) {
 
   document.body.appendChild(modal);
   return modal;
+}
+
+export function renderCards(itemsArray) {
+  let result = '';
+
+  itemsArray.forEach(item => {
+    result += _createCard(item);
+  })
+
+  return result;
+}
+
+function _createCard(cardParams) {
+  const { id, title, price, img } = cardParams;
+
+  return `
+    <div class="card" data-id="${id}">
+      <h3 class="card__title">${title}</h3>
+      <div class="card__content">
+        <img class="card__image"
+          src="${img}"
+          alt="oranges">
+      </div>
+      <div class="options">
+        <button class="card__button view" data-id="${id}" data-function="view-price">
+          View price
+        </button>
+        <button class="card__button delete" data-id="${id}" data-function="delete">
+          Delete
+        </button>
+      </div>
+    </div>`
 }
