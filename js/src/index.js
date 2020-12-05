@@ -5,7 +5,9 @@ import { renderCards } from './common/render';
 document.addEventListener('DOMContentLoaded', () => {
   // render goods cards
   const goodsContainer = document.querySelector('.container');
-  goodsContainer.innerHTML = renderCards(goods);
+  let fruits = [...goods];
+
+  goodsContainer.innerHTML = renderCards(fruits);
 
   // modal configuration
   const priceModal = $.modal({
@@ -15,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     width: '400px',
     buttons: [
       {
-        title: 'OK',
+        title: 'Close',
         classList: 'modal__confirm button',
         handler() {
           priceModal.close();
@@ -24,37 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   });
 
-  const confirmModal = $.modal({
-    title: "Delete this item?",
-    closable: false,
-    content: '<p>Are you sure you want to delete this item?</p>',
-    width: '400px',
-    buttons: [{
-        title: 'Confirm',
-        classList: 'modal__confirm button',
-        handler() {
-          console.log('Confirmed');
-          confirmModal.close();
-        }
-      },
-      {
-        title: 'Cancel',
-        classList: 'modal__cancel button',
-        handler() {
-          console.log('Canceled');
-          confirmModal.close();
-        }
-      }
-    ],
-  });
-
   goodsContainer.addEventListener('click', (e) => {
-    const itemId = e.target.getAttribute('data-id');
+    const itemId = +e.target.getAttribute('data-id');
     const func = e.target.getAttribute('data-function');
 
     if (!func) return;
-  
-    const item = goods.find(item => item.id == itemId);
+    const item = fruits.find(item => item.id === itemId);
 
     switch (func) {
       case "view-price": {
@@ -62,7 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
         break;
       }
       case "delete": {
-        confirmModal.open();
+        $.confirm({
+          title: 'Are you sure?',
+          itemName: item.title,
+        }).then(() => {
+          fruits = fruits.filter(fruit => fruit.id !== itemId);
+          goodsContainer.innerHTML = renderCards(fruits);
+        });
         break;
       }
     }

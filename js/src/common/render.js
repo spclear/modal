@@ -78,10 +78,10 @@ export function renderCards(itemsArray) {
 }
 
 function _createCard(cardParams) {
-  const { id, title, price, img } = cardParams;
+  const { id, title, img } = cardParams;
 
   return `
-    <div class="card" data-id="${id}">
+    <div class="card">
       <h3 class="card__title">${title}</h3>
       <div class="card__content">
         <img class="card__image"

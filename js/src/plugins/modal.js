@@ -15,13 +15,14 @@ export function modal(options) {
         return;
       }
       modal.classList.add('open');
-      _onOpen();
+      hook(options.onOpen);
     },
     close() {
-      if (!_beforeClose(true) || flags.isDestroyed) {
+      if (flags.isDestroyed) {
         console.error('Modal cannot be closed!');
         return;
       }
+      hook(options.beforeClose);
 
       flags.isClosing = true;
       modal.classList.remove('open');
@@ -31,7 +32,7 @@ export function modal(options) {
       setTimeout(() => {
         modal.classList.remove('closing');
         flags.isClosing = false;
-        _onClose();
+        hook(options.onClose);
       }, ANIMATION_TIME);
     },
     setContent(html) {
@@ -57,7 +58,7 @@ export function modal(options) {
   const closingHandler = (e) => {
     const isClosingTrigger = e.target.getAttribute('data-close');
 
-    if (isClosingTrigger) {
+    if (isClosingTrigger && options.closable) {
       modalConfig.close();
     }
   }
@@ -66,18 +67,12 @@ export function modal(options) {
   return modalConfig;
 }
 
-// lifecycle hooks
+// for lifecycle hooks
 
-function _onOpen() {
-  console.log('Modal is opened!');
-}
-
-function _onClose() {
-  console.log('Modal is closed!');
-}
-
-function _beforeClose(isClosable) {
-  return isClosable ? true : false;
+function hook(callback) {
+  if (typeof callback === 'function') {
+    callback();
+  }
 }
 
 export default modal;
