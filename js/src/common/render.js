@@ -86,7 +86,7 @@ function _createCard(cardParams) {
       <div class="card__content">
         <img class="card__image"
           src="${img}"
-          alt="oranges">
+          alt="${title.toLowerCase()}">
       </div>
       <div class="options">
         <button class="card__button view" data-id="${id}" data-function="view-price">
@@ -96,5 +96,5 @@ function _createCard(cardParams) {
           Delete
         </button>
       </div>
-    </div>`
+    </div>`;
 }

@@ -7,20 +7,29 @@ document.addEventListener('DOMContentLoaded', () => {
   const goodsContainer = document.querySelector('.container');
   goodsContainer.innerHTML = renderCards(goods);
 
-  const priceModalOptions = {
+  // modal configuration
+  const priceModal = $.modal({
     title: "Goods Info",
     closable: true,
     content: '',
     width: '400px',
-  }
+    buttons: [
+      {
+        title: 'OK',
+        classList: 'modal__confirm button',
+        handler() {
+          priceModal.close();
+        }
+      },
+    ]
+  });
 
-  const confirmModalOptions = {
+  const confirmModal = $.modal({
     title: "Delete this item?",
     closable: false,
     content: '<p>Are you sure you want to delete this item?</p>',
     width: '400px',
-    buttons: [
-      {
+    buttons: [{
         title: 'Confirm',
         classList: 'modal__confirm button',
         handler() {
@@ -37,10 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     ],
-  }
-
-  const priceModal = $.modal(priceModalOptions);
-  const confirmModal = $.modal(confirmModalOptions);
+  });
 
   goodsContainer.addEventListener('click', (e) => {
     const itemId = e.target.getAttribute('data-id');
@@ -57,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       case "delete": {
         confirmModal.open();
+        break;
       }
     }
   });
@@ -64,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function viewPrice(title, price) {
     priceModal.setContent(`
           <p>Item title: <span style="font-weight: 600">${title}</span></p>
-          <p>Price of one kilogram: <span style="font-weight: 600">${price}$</span></p>
+          <p>Price of one kilogram: <span style="font-weight: 600">${price}UAH</span></p>
         `);
     priceModal.open();
   }

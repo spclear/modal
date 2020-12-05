@@ -3,27 +3,34 @@ import { _createModal, _createFooter } from "../common/render";
 export function modal(options) {
   const modal = _createModal(options);
   const ANIMATION_TIME = 200; //ms
-  let isClosing = false;
+  const flags = {
+    isClosing : false,
+    isDestroyed : false,
+  }
 
   const modalConfig = {
     open() {
-      !isClosing && modal.classList.add('open');
+      if (flags.isDestroyed || flags.isClosing) {
+        console.error('Modal can\'t be opened: it is closing at the moment or has been destroyed.');
+        return;
+      }
+      modal.classList.add('open');
       _onOpen();
     },
     close() {
-      if (!_beforeClose(true)) {
+      if (!_beforeClose(true) || flags.isDestroyed) {
         console.error('Modal cannot be closed!');
         return;
       }
 
-      isClosing = true;
+      flags.isClosing = true;
       modal.classList.remove('open');
       modal.classList.add('closing');
 
-      // adding class "closing" for animation and removing it in ANIMATION_TIME ms
+      // adding a class "closing" for animation and removing it in ANIMATION_TIME ms
       setTimeout(() => {
         modal.classList.remove('closing');
-        isClosing = false;
+        flags.isClosing = false;
         _onClose();
       }, ANIMATION_TIME);
     },
@@ -43,6 +50,7 @@ export function modal(options) {
     destroy() {
       modal.removeEventListener('click', closingHandler);
       modal.remove();
+      flags.isDestroyed = true;
     },
   }
 
